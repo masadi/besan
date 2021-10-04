@@ -22,7 +22,7 @@
       </div>
 
       <div class="links">
-        <a href="https://github.com/masadi/besan">github.com/masadi/besana</a>
+        <a href="https://github.com/masadi/besan">github.com/masadi/besan</a>
       </div>
     </div>
   </div>
