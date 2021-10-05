@@ -8,7 +8,10 @@ import '~/plugins'
 import '~/components'
 
 Vue.config.productionTip = false
-
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 /* eslint-disable no-new */
 new Vue({
   i18n,

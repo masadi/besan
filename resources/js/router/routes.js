@@ -13,6 +13,13 @@ export default [
   { path: '/email/resend', name: 'verification.resend', component: page('auth/verification/resend.vue') },
 
   { path: '/home', name: 'home', component: page('home.vue') },
+  { path: '/santri', name: 'santri', component: page('santri.vue') },
+  { path: '/beasiswa', name: 'beasiswa', component: page('beasiswa.vue') },
+  { path: '/pembiayaan', name: 'pembiayaan', component: page('pembiayaan.vue') },
+  { path: '/pengeluaran', name: 'pengeluaran', component: page('pengeluaran.vue') },
+  { path: '/laporan-belanja', name: 'laporan.belanja', component: page('belanja.vue') },
+  { path: '/laporan-tanda-terima', name: 'laporan.terima', component: page('terima.vue') },
+  { path: '/laporan-kwitansi', name: 'laporan.kwitansi', component: page('kwitansi.vue') },
   {
     path: '/settings',
     component: page('settings/index.vue'),

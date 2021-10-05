@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
+    <div class="container-fluid">
       <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-brand">
         {{ appName }}
       </router-link>
@@ -10,11 +10,49 @@
       </button>
 
       <div id="navbar" class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-          <locale-dropdown />
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li> -->
+        <ul v-if="user" class="navbar-nav">
+          <!--locale-dropdown /-->
+          <li class="nav-item">
+            <router-link :to="{ name: 'home' }" class="nav-link">
+              {{ $t('Yayasan') }}
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'santri' }" class="nav-link">
+              {{ $t('Santri') }}
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'beasiswa' }" class="nav-link">
+              {{ $t('Beasiswa') }}
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'pembiayaan' }" class="nav-link">
+              {{ $t('Pembiayaan') }}
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'pengeluaran' }" class="nav-link">
+              {{ $t('Pengeluaran') }}
+            </router-link>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Laporan
+            </a>
+            <div class="dropdown-menu">
+              <router-link :to="{ name: 'laporan.belanja' }" class="dropdown-item">
+                {{ $t('Laporan Belanja') }}
+              </router-link>
+              <router-link :to="{ name: 'laporan.terima' }" class="dropdown-item">
+                {{ $t('Tanda Terima') }}
+              </router-link>
+              <router-link :to="{ name: 'laporan.kwitansi' }" class="dropdown-item">
+                {{ $t('Kwitansi') }}
+              </router-link>
+            </div>
+          </li>
         </ul>
 
         <ul class="navbar-nav ms-auto">

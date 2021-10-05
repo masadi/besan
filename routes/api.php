@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\ReferensiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +27,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout']);
 
     Route::get('user', [UserController::class, 'current']);
+    Route::get('projects', [UserController::class, 'current']);
 
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
+    Route::group(['prefix' => 'referensi'], function(){
+        Route::get('/{query}', [ReferensiController::class, 'index']);
+    });
 });
 
 Route::group(['middleware' => 'guest:api'], function () {
