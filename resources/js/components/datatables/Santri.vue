@@ -2,8 +2,8 @@
     <div>
         <div class="row">
       	<!-- BLOCK INI AKAN MENGHANDLE LOAD DATA PERPAGE, DENGAN DEFAULT ADALAH 10 DATA -->
-        <div class="col-md-4 mb-2">
-            <div class="form-inline">
+        <div class="col col-md-4 mb-2">
+            <div class="input-group">
                 <!-- KETIKA SELECT BOXNYA DIGANTI, MAKA AKAN MENJALANKAN FUNGSI loadPerPage -->
                 <select class="form-select" v-model="meta.per_page" @change="loadPerPage">
                     <option value="10">10</option>
@@ -11,14 +11,14 @@
                     <option value="50">50</option>
                     <option value="100">100</option>
                 </select>
-                <label class="ml-2">Entri</label>
+                <label class="input-group-text">Entri</label>
             </div>
         </div>
       
         <!-- BLOCK INI AKAN MENG-HANDLE PENCARIAN DATA -->
         <div class="col-md-4 offset-md-4">
-            <div class="form-inline float-right">
-                <label class="mr-2">Cari</label>
+            <div class="input-group float-right">
+                <label class="input-group-text">Cari</label>
                 <!-- KETIKA ADA INPUTAN PADA KOLOM PENCARIAN, MAKA AKAN MENJALANKAN FUNGSI SEARCH -->
                 <input type="text" class="form-control" @input="search">
             </div>
@@ -194,6 +194,7 @@ export default {
     methods: {
         //JIKA SELECT BOX DIGANTI, MAKA FUNGSI INI AKAN DIJALANKAN
         loadPerPage(val) {
+            console.log(val);
             //DAN KITA EMIT LAGI DENGAN NAMA per_page DAN VALUE SESUAI PER_PAGE YANG DIPILIH
             this.$emit('per_page', this.meta.per_page)
         },

@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-lg-12 m-auto">
-      <card :title="$t('Data Santri')">
+      <card :title="$t('Data Santri')" :button="true" :button_text="$t('Tambah Data')" :to="$t('tambah-santri')">
         <app-datatable :items="items" :fields="fields" :meta="meta" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" />
         <!--b-table striped hover :items="items" :fields="fields" show-empty>
           <template #empty="scope">

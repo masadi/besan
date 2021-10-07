@@ -14,6 +14,7 @@ export default [
 
   { path: '/home', name: 'home', component: page('home.vue') },
   { path: '/santri', name: 'santri', component: page('santri.vue') },
+  { path: '/tambah-santri', name: 'tambah-santri', component: page('tambah-santri.vue') },
   { path: '/beasiswa', name: 'beasiswa', component: page('beasiswa.vue') },
   { path: '/pembiayaan', name: 'pembiayaan', component: page('pembiayaan.vue') },
   { path: '/pengeluaran', name: 'pengeluaran', component: page('pengeluaran.vue') },

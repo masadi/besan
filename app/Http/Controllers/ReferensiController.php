@@ -47,6 +47,21 @@ class ReferensiController extends Controller
     }
     public function get_santri($request){
         $user = $request->user();
+        if ($request->isMethod('post')) {
+            $santri = Santri::create([
+                'yayasan_id' => $user->yayasan_id,
+                'nama' => $request->nama,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => date('Y-m-d', strtotime($request->tanggal_lahir)),
+                'jenis_kelamin' => $request->jenis_kelamin,
+            ]);
+            if($santri){
+                $response = ['status' => 'success', 'message' => 'Data santri berhasil disimpan', 'ttl' => date('Y-m-d', strtotime($request->tanggal_lahir))];
+            } else {
+                $response = ['status' => 'failed', 'message' => 'Data santri gagal disimpan'];
+            }
+            return response()->json($response);
+        }
         $data = Santri::where('yayasan_id', $user->yayasan_id)->orderBy(request()->sortby, request()->sortbydesc)
             //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
             ->when(request()->q, function($data) {
