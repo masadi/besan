@@ -1,9 +1,12 @@
 <template>
   <div class="row">
     <div class="col-lg-12 m-auto">
-      <card :title="$t('Data Penerima Beasiswa')">
+      <!--card :title="$t('Data Penerima Beasiswa')">
         {{ $t('you_are_logged_in') }}
         {{user}}
+      </card-->
+      <card :title="$t('Data Penerima Beasiswa')" :button="true" :button_text="$t('Tambah Data')" :to="$t('tambah-beasiswa')">
+        <app-datatable :items="items" :fields="fields" :meta="meta" @per_page="handlePerPage" @pagination="handlePagination" @search="handleSearch" @sort="handleSort" />
       </card>
     </div>
   </div>
@@ -12,20 +15,79 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import Datatable from '../components/datatables/Beasiswa.vue' //IMPORT COMPONENT DATATABLENYA
 export default {
   middleware: 'auth',
-  async asyncData () {
-    console.log(this.user);
-    const { data: projects } = await axios.get('/api/projects/')
+  components: {
+    'app-datatable': Datatable //REGISTER COMPONENT DATATABLE
+  },
+  created() {
+    //MAKA AKAN MENJALANKAN FUNGSI BERIKUT
+    this.loadPostsData()
+  },
+  data() {
     return {
-      projects
+      fields: [{key:'santri.nama', label: 'Nama Santri'}, {key:'tahun', label:'Tahun Anggaran'}, 'jumlah', 'aksi'],
+      items: [],
+      meta: [], //JUGA BERLAKU UNTUK META
+      current_page: 1, //DEFAULT PAGE YANG AKTIF ADA PAGE 1
+      per_page: 10, //DEFAULT LOAD PERPAGE ADALAH 10
+      search: '',
+      sortBy: 'created_at', //DEFAULT SORTNYA ADALAH CREATED_AT
+      sortByDesc: true, //ASCEDING
     }
   },
-  metaInfo () {
-    return { title: this.$t('Data Penerima Beasiswa') }
+  methods: {
+    loadPostsData() {
+      let current_page = this.current_page//this.search == '' ? this.current_page : 1
+      //LAKUKAN REQUEST KE API UNTUK MENGAMBIL DATA POSTINGAN
+      axios.get(`/api/referensi/beasiswa`, {
+        //KIRIMKAN PARAMETER BERUPA PAGE YANG SEDANG DILOAD, PENCARIAN, LOAD PERPAGE DAN SORTING.
+        params: {
+          page: current_page,
+          per_page: this.per_page,
+          q: this.search,
+          sortby: this.sortBy,
+          sortbydesc: this.sortByDesc ? 'DESC' : 'ASC'
+        }
+      }).then((response) => {
+        let getData = response.data.data
+        this.items = getData.data //MAKA ASSIGN DATA POSTINGAN KE DALAM VARIABLE ITEMS
+        this.meta = {
+          total: getData.total,
+          current_page: getData.current_page,
+          per_page: getData.per_page,
+          from: getData.from,
+          to: getData.to,
+          isBusy: false,
+        }
+      })
+    },
+    handlePerPage(val) {
+      this.per_page = val //SET PER_PAGE DENGAN VALUE YANG DIKIRIM DARI EMIT
+      this.loadPostsData() //DAN REQUEST DATA BARU KE SERVER
+    },
+    //JIKA ADA EMIT PAGINATION YANG DIKIRIM, MAKA FUNGSI INI AKAN DIEKSEKUSI
+    handlePagination(val) {
+      this.current_page = val //SET CURRENT PAGE YANG AKTIF
+      this.loadPostsData()
+    },
+    //JIKA ADA DATA PENCARIAN
+    handleSearch(val) {
+      this.search = val //SET VALUE PENCARIAN KE VARIABLE SEARCH
+      this.loadPostsData() //REQUEST DATA BARU
+    },
+    //JIKA ADA EMIT SORT
+    handleSort(val) {
+      if (val.sortBy) {
+        this.sortBy = val.sortBy
+        this.sortByDesc = val.sortDesc
+        this.loadPostsData() //DAN LOAD DATA BARU BERDASARKAN SORT
+      }
+    },
   },
-  computed: mapGetters({
-    user: 'auth/user'
-  }),
+  metaInfo () {
+    return { title: this.$t('Data Santri') }
+  },
 }
 </script>

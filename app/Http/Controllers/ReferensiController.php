@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Yayasan;
 use App\Models\Santri;
+use App\Models\Beasiswa;
 use App\Models\Jenis_pembiayaan;
 
 class ReferensiController extends Controller
@@ -72,6 +73,42 @@ class ReferensiController extends Controller
         return response()->json(['status' => 'success', 'data' => $data]);
         $yayasan = Santri::where('yayasan_id', $user->yayasan_id)->get();
         return response()->json(['status' => 'success', 'data' => $yayasan]);
+    }
+    public function get_beasiswa($request){
+        $user = $request->user();
+        if ($request->isMethod('post')) {
+            $find = Beasiswa::with(['santri'])->where('santri_id', $request->santri_id)->where('tahun', $request->tahun)->first();
+            if($find){
+                $response = ['status' => 'failed', 'message' => 'Santri '.$find->santri->nama.' di Tahun Anggaran '.$request->tahun.' sudah tersimpan di database'];
+                return response()->json($response);
+            }
+            $beasiswa = Beasiswa::create([
+                'santri_id' => $request->santri_id,
+                'tahun' => $request->tahun,
+                'jumlah' => $request->jumlah,
+            ]);
+            if($beasiswa){
+                $response = ['status' => 'success', 'message' => 'Data beasiswa santri berhasil disimpan'];
+            } else {
+                $response = ['status' => 'failed', 'message' => 'Data beasiswa santri gagal disimpan'];
+            }
+            return response()->json($response);
+        }
+        $data = Beasiswa::with(['santri'])->whereHas('santri', function($query) use ($user){
+            $query->where('yayasan_id', $user->yayasan_id);
+        })->orderBy(request()->sortby, request()->sortbydesc)
+            //JIKA Q ATAU PARAMETER PENCARIAN INI TIDAK KOSONG
+            ->when(request()->q, function($data) {
+                //MAKA FUNGSI FILTER AKAN DIJALANKAN
+                $data = $data->where('nama', 'LIKE', '%' . request()->q . '%')
+                    ->orWhere('tempat_lahir', 'LIKE', '%' . request()->q . '%');
+        })->paginate(request()->per_page); //KEMUDIAN LOAD PAGINATIONNYA BERDASARKAN LOAD PER_PAGE YANG DIINGINKAN OLEH USER
+        return response()->json(['status' => 'success', 'data' => $data]);
+    }
+    public function get_santri_select($request){
+        $user = $request->user();
+        $data = Santri::select('id as value', 'nama as text')->where('yayasan_id', $user->yayasan_id)->orderBy('nama')->get();
+        return response()->json(['status' => 'success', 'data' => $data]);
     }
     public function get_pembiayaan($request){
         $user = $request->user();
