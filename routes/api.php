@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/password', [PasswordController::class, 'update']);
     Route::group(['prefix' => 'referensi'], function(){
         Route::get('/{query}', [ReferensiController::class, 'index']);
+        Route::post('/{query}', [ReferensiController::class, 'index']);
     });
 });
 
